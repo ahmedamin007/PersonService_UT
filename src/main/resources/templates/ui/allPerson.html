@@ -1,0 +1,43 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>All Books</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h1> Persons </h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<table class="table">
+				<thead>
+					<tr>
+						<th> First Name </th>
+						<th> Last Name </th>
+						<th> Phone </th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${persons.empty}">
+						<td colspan="2"> No Persons Available </td>
+					</tr>
+					<tr th:each="person : ${persons}">
+						<td><span th:text="${person.firstName}"> First Name </span></td>
+						<td><span th:text="${person.lastName}"> Last Name </span></td>
+						<td><span th:text="${person.phone}"> Last Name </span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="col-md-6">
+			<a class="btn btn-success" href="#" th:href="@{/person/create}"> Add person </a>
+		</div>
+	</div>
+</div>
+</body>
+</html>
