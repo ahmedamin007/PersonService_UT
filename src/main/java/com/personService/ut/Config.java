@@ -19,7 +19,6 @@ public class Config implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("index");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
-
     @Bean
     public ITemplateResolver templateResolver() {
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
@@ -29,4 +28,10 @@ public class Config implements WebMvcConfigurer {
         resolver.setCharacterEncoding("UTF-8");
         return resolver;
     }
+    
+    
+    
+    
+    
+    
 }

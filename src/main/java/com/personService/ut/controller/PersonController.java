@@ -2,6 +2,8 @@ package com.personService.ut.controller;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +26,6 @@ public class PersonController {
 	@Autowired
 	PersonService personService;
 	
-	
-
-	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getPerson(  @PathVariable Integer id){
 		Person person = personService.getPesonById(id);
@@ -34,6 +33,10 @@ public class PersonController {
 	}
 	
 	
+    @GetMapping(value = "/allPerson")
+    public  ResponseEntity<List<Person>>  getAllPerson() {
+        return new ResponseEntity(personService.getAllPersons(),HttpStatus.OK);
+    }
 
 	@PostMapping("/add/{id}/{firstName}/{lastName}/{phone}")
 	public ResponseEntity<?> addPerson(@PathVariable Integer id ,@PathVariable String firstName ,
