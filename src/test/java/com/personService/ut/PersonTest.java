@@ -30,29 +30,30 @@ class PersonTest {
 
 	@Test
 	public void testCreatePersonAPI() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/person/add/3001/ahmed/ali/323232")
+		mockMvc.perform(MockMvcRequestBuilders.post("/person/add/1/ahmed/ali/323232")
 	      .contentType(MediaType.APPLICATION_JSON)
 	      .accept(MediaType.APPLICATION_JSON))
 	      .andExpect(status().isCreated())
 	      .andExpect(MockMvcResultMatchers.jsonPath("$.personId").exists())
-	      .andExpect(content().json("{\"personId\":3001,\"firstName\":\"ahmed\"}"));
+	      .andExpect(content().json("{\"personId\":1,\"firstName\":\"ahmed\"}"));
 		
-		
-	    Person personEntry = personRepository.getPesonById(Integer.valueOf(3001));
+	    Person personEntry = personRepository.getPesonById(Integer.valueOf(1));
 	    assertThat(personEntry.getFirstName()).isEqualTo("ahmed");
 		
 	}
+	
+
 	
 	
 	@Test
 	public void testGetPersonByIdAPI() throws Exception 
 	{
 		mockMvc.perform( MockMvcRequestBuilders
-	      .get("/person/{id}", 3001)
+	      .get("/person/{id}", 1)
 	      .accept(MediaType.APPLICATION_JSON))
 	      .andDo(print())
 	      .andExpect(status().isOk())
-	      .andExpect(MockMvcResultMatchers.jsonPath("$.personId").value(3001));
+	      .andExpect(MockMvcResultMatchers.jsonPath("$.personId").value(1));
 	}
 	
 

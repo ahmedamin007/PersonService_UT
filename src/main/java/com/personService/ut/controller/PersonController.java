@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +46,18 @@ public class PersonController {
 	@PutMapping("/addOrUpdate")
 	public ResponseEntity<?> updatePerson(@RequestBody @NotNull Person person) {
 		personService.updatePerson(person);
+		return new ResponseEntity<Person>(person,HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/add/{id}/{firstName}/{lastName}/{phone}")
+	public ResponseEntity<?> addPerson(@PathVariable Integer id ,@PathVariable String firstName ,
+									   @PathVariable String lastName,@PathVariable String phone){
+		Person person = new Person();
+		person.setPersonId(id);
+		person.setFirstName(firstName);
+		person.setLastName(lastName);
+		person.setPhone(phone);
+		personService.addPerson(person);
 		return new ResponseEntity<Person>(person,HttpStatus.CREATED);
 	}
 	

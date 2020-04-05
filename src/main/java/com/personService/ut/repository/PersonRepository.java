@@ -35,6 +35,8 @@ public class PersonRepository {
 			}
 			if (index > -1)
 				personList.set(index, person);	
+			else
+				personList.add(person);
 		}
 		
 	}
