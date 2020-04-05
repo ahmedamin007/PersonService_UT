@@ -1,6 +1,8 @@
 package com.personService.ut.service;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +16,23 @@ public class PersonService {
 	PersonRepository personRepository;
 	
 	public void addPerson(Person person) {
-		personRepository.save(person);
+		personRepository.saveOrUpdate(person);
 	}
+	
+	public void updatePerson(Person person) {
+		personRepository.saveOrUpdate(person);
+	}
+	
 	
 	public List<Person> getAllPersons(){
 		return personRepository.getAllPersons();
 	}
 	
-	public Person getPesonById(Integer id) {
+	public boolean remove(Integer id) {
+		return personRepository.delete(id);
+	}
+	
+	public Person  getPesonById(Integer id) {
 		return personRepository.getPesonById(id);
 	}
 }

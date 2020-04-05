@@ -1,25 +1,49 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
 	<title>All Person</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<meta charset="UTF-8">
+	
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
+	<div class="row">
+		<div class="col-md-12">
+			<h1> Persons </h1>
+		</div>
+	</div>
 	<div class="container" id="main">
-		<div class="row">
-			<div class="col-md-12">
-				<h1> Persons </h1>
-			</div>
-		</div>
-	
-	
-		<div class="col-md-6">
-			<a class="btn btn-success" href="#" th:href="@{/person/create}"> Add person </a>
-		</div>
-		
-		
 
+    <form v-on:submit.prevent="postPerson">
+        <div class="card mb-auto">
+            <div aria-controls="personForm" aria-expanded="true" class="card-header show" data-target="personForm"
+                 data-toggle="collapse">
+                <div class="float-left">New/Edit Person</div>
+                <div class="float-right"></div>
+            </div>
+            <div class="card card-body collapse" id="personForm">
+                <div class="form-group row">
+                    <label for="firstName" class="col-sm-4 col-form-label">First Name</label>
+                    <input id="personId" type="hidden" v-model="person_id">
+                    <input class="form-control col-sm-8" id="firstName" placeholder="First Name" type="text" v-model="person_firstName"/>
+                </div>
+                <div class="form-group row">
+                    <label for="lastName" class="col col-sm-4">Last Name</label>
+                    <input class="form-control col-sm-8" id="lastName" placeholder="Last Name" type="text" v-model="person_lastName"/>
+                </div>
+                <div class="form-group row">
+                    <label for="phone" class="col col-sm-4">Phone</label>
+                    <input class="form-control col-sm-8" id="phone" placeholder="Phone" type="text" v-model="phone"/>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col col-sm-4"></div>
+                    <input class="btn btn-primary col col-sm-8" type="submit" value="Save">
+                </div>
+            </div>
+        </div>
+    </form>
 
     <br><br>
 		
@@ -38,8 +62,8 @@
 			    <td>{{ person.lastName }}</td>
 			    <td>{{ person.phone }}</td>
 	            <td>
-	                <button class="btn btn-primary" v-on:click="">Edit</button>
-	                <button class="btn btn-danger" v-on:click="">Delete</button>
+                <button class="btn btn-primary" v-on:click="editUser(person)">Edit</button>
+                <button class="btn btn-danger" v-on:click="deleteUser(person)">Delete</button>
 	            </td>
 	        </tr>
 	        </tbody>
@@ -53,15 +77,59 @@
 	        el: '#main',
 	        data() {
 	            return {
+	                person_id: null,
+	                person_firstName: null,
+	                person_lastName: null,
+	                phone: null,
 	            	persons: null
 	            }
 	        },
 	        mounted(){
-	            axios
-	                .get("http://localhost:8081/person/allPerson")
-	                .then(response => (this.persons = response.data))
+	            this.getAllPerson();
+	            
 	        },
+	        methods: {
+	            getAllPerson: function () {
+		            axios
+	                .get("http://localhost:8081/person/allPerson")
+	                .then(response => (this.persons = response.data));
+	                document.getElementById('personForm')
+                    .setAttribute("class", document.getElementById('personForm').getAttribute("class") + " show");
+	            },
+	            postPerson: function (event) {
+                    axios
+                        .put("http://localhost:8081/person/addOrUpdate" 
+                        , {
+                           "personId": this.person_id,
+                           "firstName": this.person_firstName,
+                           "lastName": this.person_lastName,
+                           "phone": this.phone
+                       	})
+                        .then(savedPerson => {
+                            this.getAllPerson();
+                            this.person_firstName = '';
+                            this.person_lastName = '';
+                            this.phone='';
+                            this.person_id = '';
+                        })
+	            },
+	            editUser: function (person) {
+	                this.person_id = person.personId;
+	                this.person_firstName = person.firstName;
+	                this.person_lastName = person.lastName;
+	                this.phone = person.phone;
+	                document.getElementById('personForm')
+	                    .setAttribute("class", document.getElementById('personForm').getAttribute("class") + " show");
+	            },
+	            deleteUser: async function (person) {
+	                await axios
+	                    .delete("http://localhost:8081/person/delete/" + person.personId);
+	                this.getAllPerson();
+	            }
+	        }
 	    })
 	</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" />
 </body>
 </html>
