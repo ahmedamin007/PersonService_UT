@@ -29,7 +29,6 @@ import com.personService.ut.repository.PersonRepository;
 @ComponentScan
 class PersonTest {
 
-	
 	@Autowired
 	private MockMvc mockMvc;
 	
@@ -53,8 +52,6 @@ class PersonTest {
 
     @Test
     public void testCreateOrUpdate () throws Exception {
-
-        
         Person person= new Person(null, "Ahmed", "Ali", "323232");
 
         MockHttpServletRequestBuilder builder =
@@ -65,7 +62,7 @@ class PersonTest {
         this.mockMvc.perform(builder)
                     .andExpect(MockMvcResultMatchers.status().isCreated())
 	          	    .andExpect(MockMvcResultMatchers.jsonPath("$.personId").exists())
-	        	    .andExpect(content().json("{\"personId\":2,\"firstName\":\"Ahmed\",\"lastName\":\"Ali\"}"));
+	        	    .andExpect(content().json("{\"firstName\":\"Ahmed\",\"lastName\":\"Ali\"}"));
     }
 	
     public  String asJsonString(final Object obj) {
@@ -87,6 +84,14 @@ class PersonTest {
 	      .andExpect(MockMvcResultMatchers.jsonPath("$.personId").value(1));
 	}
 	
+	
+	@Test
+	public void testDeletePerson() throws Exception {
+	    this.mockMvc.perform(MockMvcRequestBuilders
+	            .delete("/person/delete/{id}", "1")
+	            .contentType(MediaType.APPLICATION_JSON))
+        		.andExpect(status().isOk());
+	}
 
 
 }
