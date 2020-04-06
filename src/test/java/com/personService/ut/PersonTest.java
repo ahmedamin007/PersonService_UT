@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -90,7 +91,8 @@ class PersonTest {
 	    this.mockMvc.perform(MockMvcRequestBuilders
 	            .delete("/person/delete/{id}", "1")
 	            .contentType(MediaType.APPLICATION_JSON))
-        		.andExpect(status().isOk());
+        		.andExpect(status().isOk())
+        		.andDo(MockMvcResultHandlers.print());
 	}
 
 
